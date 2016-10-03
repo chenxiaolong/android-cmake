@@ -1420,6 +1420,18 @@ if( ANDROID_COMPILER_VERSION VERSION_EQUAL "4.6" )
  endif()
 endif() # version 4.6
 
+if( ANDROID_COMPILER_VERSION VERSION_EQUAL "4.9" )
+ if( ANDROID_GOLD_LINKER AND ARM64_V8A )
+  set( ANDROID_LINKER_FLAGS "${ANDROID_LINKER_FLAGS} -fuse-ld=gold" )
+ else()
+  message( WARNING "The default bfd linker from arm64 GCC 4.9 toolchain can fail with undefined reference error message. See https://github.com/android-ndk/ndk/issues/148
+  On Linux and OS X host platform you can workaround this problem using gold linker (default).
+  Rerun cmake with -DANDROID_GOLD_LINKER=ON option in case of problems.
+" )
+ endif()
+endif() # version 4.9
+
+
 if( ANDROID_NOEXECSTACK )
  if( ANDROID_COMPILER_IS_CLANG )
   set( ANDROID_CXX_FLAGS    "${ANDROID_CXX_FLAGS} -Xclang -mnoexecstack" )
